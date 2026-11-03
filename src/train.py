@@ -80,7 +80,7 @@ def main():
     train_ds = Sen1FloodsDataset("train", augment=True)
     valid_ds = Sen1FloodsDataset("valid", augment=False)
     train_ld = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True,
-                          num_workers=args.workors, drop_last=False, pin_memory=True)
+                          num_workers=args.workers, drop_last=False, pin_memory=True)
     valid_ld = DataLoader(valid_ds, batch_size=32, num_workers=args.workers, pin_memory=True)
     print(f"[data] train {len(train_ds)} / valid {len(valid_ds)} chips")
 
