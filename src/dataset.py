@@ -35,7 +35,9 @@ class Sen1FloodsDataset(Dataset):
         if params_path is None:
             params_path = Path(__file__).resolve().parents[1] / "outputs/preprocess_params.json"
         params = json.loads(Path(params_path).read_text())
-        self.p1, self.p99 = float(params["clip_p1"]), float(params["clip_p99"])
+        # 分通道裁剪范围（vv/vh 回波强度差 5~10dB，不能共用一套，见调优记录）
+        self.clip_lo = np.array([params["clip_p1_vv"], params["clip_p1_vh"]], dtype=np.float32)[:, None, None]
+        self.clip_hi = np.array([params["clip_p99_vv"], params["clip_p99_vh"]], dtype=np.float32)[:, None, None]
 
     def __len__(self):
         return len(self.samples)
@@ -46,8 +48,8 @@ class Sen1FloodsDataset(Dataset):
         lab = tifffile.imread(self.lab_dir / labf)  # (H, W) int16: -1/0/1
 
         nan_mask = np.isnan(img).any(axis=0)  # (H, W) 任一通道缺测即视为无效
-        img = np.clip(img, self.p1, self.p99)
-        img = (img - self.p1) / (self.p99 - self.p1)
+        img = np.clip(img, self.clip_lo, self.clip_hi)
+        img = (img - self.clip_lo) / (self.clip_hi - self.clip_lo)
         img = np.nan_to_num(img, nan=0.0)
 
         water = (lab == 1).astype(np.float32)
