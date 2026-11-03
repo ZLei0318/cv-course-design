@@ -80,8 +80,10 @@ def main():
     device = "cuda"
 
     base = SamModel.from_pretrained(MODEL_ID)
-    lcfg = LoraConfig(r=8, lora_alpha=16, lora_dropout=0.05, bias="none",
-                      target_modules=["q_proj", "v_proj"])  # 编码器+解码器注意力投影
+    # transformers 5.x SAM 视觉编码器注意力为融合命名 attn.qkv/attn.proj（旧版是分立
+    # q/k/v_proj）；首轮只匹配到解码器微型注意力（47k 参数，学不动）——本轮全命名覆盖
+    lcfg = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05, bias="none",
+                      target_modules=["qkv", "proj", "q_proj", "v_proj"])
     model = get_peft_model(base, lcfg).to(device)
     model.print_trainable_parameters()
 
