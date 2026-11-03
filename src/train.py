@@ -17,9 +17,8 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
 from src.dataset import Sen1FloodsDataset
-from src.unet import build_unet
+from src.models import FACTORIES
 
-FACTORIES = {"unet": build_unet}
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs"
 CKPT_DIR = OUT / "checkpoints"

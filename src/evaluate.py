@@ -12,7 +12,7 @@ import torch
 from torch.utils.data import DataLoader
 
 from src.dataset import Sen1FloodsDataset
-from src.unet import build_unet
+from src.models import FACTORIES
 
 CKPT_DIR = Path(__file__).resolve().parents[1] / "outputs/checkpoints"
 OUT = Path(__file__).resolve().parents[1] / "outputs"
@@ -56,12 +56,13 @@ def eval_split(model, split: str, device: str):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", required=True)
+    ap.add_argument("--model", default="unet", choices=sorted(FACTORIES))
     ap.add_argument("--splits", nargs="+", default=["valid", "test", "bolivia"])
     args = ap.parse_args()
 
     device = "cuda"
     ckpt = torch.load(CKPT_DIR / f"{args.tag}_best.pth", map_location=device, weights_only=True)
-    model = build_unet().to(device)
+    model = FACTORIES[args.model]().to(device)
     model.load_state_dict(ckpt["model"])
     print(f"加载 {args.tag}（epoch {ckpt['epoch']}, valid macroIoU {ckpt['macro_iou']:.4f}）")
 
