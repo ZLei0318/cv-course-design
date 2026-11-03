@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
-from transformers import SamAutomaticMaskGenerator, SamModel, SamProcessor
+from transformers import SamModel, SamProcessor
 
 from src.dataset import Sen1FloodsDataset
 
@@ -33,6 +33,19 @@ def masked_iou(pred: np.ndarray, water: np.ndarray, valid: np.ndarray) -> float:
     return float(inter / (p.sum() + w.sum() - inter + 1e-6))
 
 
+def masks_to_original(outputs, orig_hw=(512, 512)):
+    """绕开 transformers 5.x 有问题的 post_process_masks：直接把 pred_masks 双线性回原尺寸
+
+    输入是正方形 512 时，官方后处理等价于此操作。pred_masks 可能是
+    (B, point_batch, C, h, w) 的任意前缀，统一 reshape 后插值。
+    返回 (n_masks, 512, 512) 的概率图 numpy。
+    """
+    pm = outputs.pred_masks
+    pm2 = pm.reshape(-1, 1, pm.shape[-2], pm.shape[-1])
+    up = torch.nn.functional.interpolate(pm2.float(), size=orig_hw, mode="bilinear", align_corners=False)
+    return up.sigmoid().cpu().numpy()[:, 0]
+
+
 @torch.no_grad()
 def point_prompted_iou(model, processor, img, water, valid, k_points=5):
     """随机取 k 个真值水点作提示，返回该 chip 的最好/平均 IoU 与空掩码率"""
@@ -45,10 +58,8 @@ def point_prompted_iou(model, processor, img, water, valid, k_points=5):
     for i in idx:
         inputs = processor(to_rgb(img), input_points=[[[int(xs[i]), int(ys[i])]]], return_tensors="pt").to("cuda")
         outputs = model(**inputs)
-        masks = processor.post_process_masks(
-            outputs, inputs["original_sizes"].tolist(), inputs["reshaped_input_sizes"].tolist())
-        m = masks[0]  # (num_points?, 1, H, W) logits
-        m = np.asarray(m.sigmoid().cpu())[0, 0] > 0.5
+        probs = masks_to_original(outputs)  # (1, 512, 512)
+        m = probs[0] > 0.5
         if m.sum() == 0:
             empties += 1
             continue
@@ -59,29 +70,40 @@ def point_prompted_iou(model, processor, img, water, valid, k_points=5):
 
 
 @torch.no_grad()
-def amg_qualitative(model, ds, names, out_dir: Path, limit=3):
-    """自动掩码生成：无提示零样本，SAM 自己找'对象'"""
+def grid_zero_shot(model, processor, ds, indices, out_dir: Path, limit=3, stride=64):
+    """无真值提示的零样本：网格点逐个前向扫描，掩码并集=SAM 看见的前景
+
+    （原计划用 SamAutomaticMaskGenerator，transformers 5.x 已移除；多点一次前向的
+    形状后处理也不支持，故逐点前向——语义等价，仅慢一点）
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
-    gen = SamAutomaticMaskGenerator(model)
     rows = []
-    for i in names[:limit]:
+    for i in indices[:limit]:
         img, water, valid, name = ds[i]
         rgb01 = to_rgb(img.numpy())
-        masks = gen((rgb01 * 255).astype(np.uint8))
-        rows.append({"chip": name, "amg_masks": len(masks),
-                     "amg_area_pct": 100 * sum(int(m["segmentation"].sum()) for m in masks) / rgb01.size * 3})
+        union = np.zeros(rgb01.shape[:2], dtype=bool)
+        n_pts = 0
+        for y in range(stride // 2, 512, stride):
+            for x in range(stride // 2, 512, stride):
+                inputs = processor(rgb01, input_points=[[[x, y]]], return_tensors="pt").to("cuda")
+                outputs = model(**inputs, multimask_output=False)
+                m = masks_to_original(outputs)[0] > 0.5
+                union |= m
+                n_pts += 1
+        print(f"[grid] {name}: {n_pts} 点扫描完成", flush=True)
+        iou = masked_iou(union, water[0].numpy() > 0, valid.numpy())
+        rows.append({"chip": name, "points": n_pts,
+                     "coverage_pct": 100 * union.mean(), "iou_vs_water": iou})
         fig, axes = plt.subplots(1, 3, figsize=(13, 4.3))
         axes[0].imshow(rgb01[..., 0], cmap="gray"); axes[0].set_title("SAR (vv)")
-        ov = rgb01.copy()
-        for m in masks:
-            ov[m["segmentation"]] = [0.9, 0.3, 0.3]
-        axes[1].imshow(ov); axes[1].set_title(f"SAM AMG: {len(masks)} masks (red)")
+        ov = rgb01.copy(); ov[union] = [0.9, 0.3, 0.3]
+        axes[1].imshow(ov); axes[1].set_title(f"SAM grid zero-shot union ({n_pts} pts)")
         gt = np.zeros((*rgb01.shape[:2], 3)); gt[water[0] > 0] = [0, 0.4, 1]
         axes[2].imshow(rgb01[..., 0], cmap="gray"); axes[2].imshow(gt, alpha=0.5)
         axes[2].set_title("Ground truth water (blue)")
         for ax in axes:
             ax.axis("off")
-        plt.tight_layout(); plt.savefig(out_dir / f"{name.replace('.tif','')}_amg.png", dpi=110); plt.close()
+        plt.tight_layout(); plt.savefig(out_dir / f"{name.replace('.tif','')}_grid.png", dpi=110); plt.close()
     return rows
 
 
@@ -99,11 +121,12 @@ def main():
     print(f"SAM 零样本模型: {MODEL_ID} "
           f"({sum(p.numel() for p in model.parameters())/1e6:.0f}M 参数，全部冻结)")
 
-    # 1) AMG 定性（test 前 N 张）
+    # 1) 网格点扫描零样本（test 前 N 张，定性+定量）
     ds_test = Sen1FloodsDataset("test", augment=False)
-    amg_rows = amg_qualitative(model, ds_test, list(range(len(ds_test))), OUT / "figures/sam_amg", args.amg_limit)
-    for r in amg_rows:
-        print(f"[AMG] {r['chip']}: 生成 {r['amg_masks']} 个掩码, 覆盖 {r['amg_area_pct']:.0f}% 像素")
+    grid_rows = grid_zero_shot(model, processor, ds_test, list(range(len(ds_test))),
+                               OUT / "figures/sam_grid", args.amg_limit)
+    for r in grid_rows:
+        print(f"[grid] {r['chip']}: 覆盖 {r['coverage_pct']:.0f}% 像素, 与水体IoU {r['iou_vs_water']:.4f}")
 
     # 2) 点提示定量
     all_rows = []
@@ -116,6 +139,8 @@ def main():
             r = point_prompted_iou(model, processor, img.numpy(), water.numpy(), valid, args.points)
             r.update({"split": split, "chip": name})
             all_rows.append(r)
+            if (i + 1) % 20 == 0:
+                print(f"[heartbeat] {split} {i+1}/{len(ds)} 已评估", flush=True)
         sub = [r for r in all_rows if r["split"] == split]
         df = pd.DataFrame(sub)
         print(f"[{split:8s}] chips {len(df):3d} | 点提示 best-IoU 均值 {df.best.mean():.4f} "
