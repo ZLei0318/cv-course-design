@@ -1,0 +1,24 @@
+# ===== Python =====
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# ===== 数据集（大文件永不入库：统一放 ~/datasets/，可重新下载）=====
+data/
+datasets/
+*.tif
+*.tiff
+*.zip
+*.tar
+*.tar.gz
+
+# ===== 训练产物（大权重不入库；指标 JSON / 小图表可保留）=====
+outputs/checkpoints/
+*.pth
+*.pt
+*.safetensors
+
+# ===== 系统杂项 =====
+.DS_Store
+*.log
