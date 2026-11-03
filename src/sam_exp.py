@@ -113,20 +113,28 @@ def main():
     ap.add_argument("--splits", nargs="+", default=["test", "bolivia"])
     ap.add_argument("--points", type=int, default=5)
     ap.add_argument("--amg-limit", type=int, default=3)
+    ap.add_argument("--adapter", default=None, help="LoRA 适配器目录；给出则评估微调后模型")
     args = ap.parse_args()
 
     np.random.seed(42)
-    model = SamModel.from_pretrained(MODEL_ID).to("cuda").eval()
+    model = SamModel.from_pretrained(MODEL_ID)
+    if args.adapter:
+        from peft import PeftModel
+        model = PeftModel.from_pretrained(model, args.adapter)
+        print(f"已加载 LoRA 适配器: {args.adapter}")
+    model = model.to("cuda").eval()
     processor = SamProcessor.from_pretrained(MODEL_ID)
-    print(f"SAM 零样本模型: {MODEL_ID} "
-          f"({sum(p.numel() for p in model.parameters())/1e6:.0f}M 参数，全部冻结)")
+    print(f"SAM 模型: {MODEL_ID} "
+          f"({sum(p.numel() for p in model.parameters())/1e6:.0f}M 参数，全部冻结)"
+          + ("（零样本）" if not args.adapter else "（LoRA 微调后）"))
 
-    # 1) 网格点扫描零样本（test 前 N 张，定性+定量）
-    ds_test = Sen1FloodsDataset("test", augment=False)
-    grid_rows = grid_zero_shot(model, processor, ds_test, list(range(len(ds_test))),
-                               OUT / "figures/sam_grid", args.amg_limit)
-    for r in grid_rows:
-        print(f"[grid] {r['chip']}: 覆盖 {r['coverage_pct']:.0f}% 像素, 与水体IoU {r['iou_vs_water']:.4f}")
+    # 1) 网格点扫描零样本（仅零样本基线时跑）
+    if not args.adapter:
+        ds_test = Sen1FloodsDataset("test", augment=False)
+        grid_rows = grid_zero_shot(model, processor, ds_test, list(range(len(ds_test))),
+                                   OUT / "figures/sam_grid", args.amg_limit)
+        for r in grid_rows:
+            print(f"[grid] {r['chip']}: 覆盖 {r['coverage_pct']:.0f}% 像素, 与水体IoU {r['iou_vs_water']:.4f}")
 
     # 2) 点提示定量
     all_rows = []
