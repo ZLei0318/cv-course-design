@@ -61,9 +61,8 @@ def forward_pred_masks(model, processor, imgs, points, device):
     inputs = processor(rgbs, input_points=[[[int(p[0]), int(p[1])]] for p in points],
                        return_tensors="pt").to(device)
     out = model(**inputs, multimask_output=False)
-    pm = out.pred_masks  # (B, 1, 1, H/4(256), W/4)
-    if pm.dim() == 5:
-        pm = pm[:, 0]
+    pm = out.pred_masks  # 前缀维度组合不定，统一 reshape 成 (n,1,h,w)
+    pm = pm.reshape(-1, 1, pm.shape[-2], pm.shape[-1])
     return F.interpolate(pm.float(), size=imgs[0].shape[-2:], mode="bilinear", align_corners=False)
 
 
