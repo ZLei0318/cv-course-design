@@ -57,8 +57,14 @@ def panel_label(ax, letter, dx=-0.14, dy=1.12):
     ax.text(dx, dy, letter, transform=ax.transAxes, ha="left", va="bottom", **PANEL)
 
 
+FIG_VERSION = "v1.0"  # 版本规范：改图升版本号，一图一文件夹
+
+
 def export(fig, name, panels=True):
-    """契约出口：先对齐门，后导出 PDF+PNG"""
+    """契约出口：先对齐门，后导出 PDF+PNG（一图一夹 + 版本号）"""
+    out_dir = OUT / name
+    out_dir.mkdir(exist_ok=True)
+    name = f"{name}/{name}_{FIG_VERSION}"
     if panels:
         from audit_panel_alignment import require_matplotlib_panel_alignment
         require_matplotlib_panel_alignment(

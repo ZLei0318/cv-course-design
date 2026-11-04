@@ -134,3 +134,11 @@ cv-course-design/
 - SegFormer：HuggingFace `nvidia/segformer-*` 系列
 - SAM：Meta Segment Anything（HuggingFace `facebook/sam-vit-*`，国内走 hf-mirror）
 - 备选数据集：Roboflow Floating Waste（universe.roboflow.com/garbagedetection-gqqya/floating-waste）
+
+
+## 版本规范（2026-11-04 起）
+
+- **报告**：`报告/课设报告_v<主>.<次>.pdf|.docx`。当前：v1.0（SCI 版，经三盲审稿修订）；v0.1 为简版草稿
+- **图片**：一图一文件夹 `报告/figures_sci/<图名>/<图名>_v<版本>.png|.pdf`，QA 记录（alignment/collision）随图同夹同版本
+- **改动规则**：只增不改——小修升次版本（v1.1），内容大改升主版本（v2.0），历史版本保留
+- 出图脚本 `scripts/make_sci_figures.py` 内 `FIG_VERSION` 常量控制版本号，改图时同步升级
