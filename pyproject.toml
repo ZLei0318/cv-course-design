@@ -3,14 +3,20 @@ name = "cv-course-design"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "accelerate>=1.15.0",
+    "datasets>=5.1.0",
     "jupyterlab>=4.6.5",
     "matplotlib>=3.11.2",
     "numpy>=2.5.4",
     "opencv-python-headless>=5.0.0.93",
     "pandas>=3.1.0",
+    "peft>=0.21.2",
+    "playwright>=1.64.1",
+    "pymupdf>=2.1",
     "scikit-learn>=1.9.1",
     "tifffile>=2026.10.15",
     "torch>=2.15.0",
     "torchvision>=0.29.2",
     "tqdm>=4.70.1",
+    "transformers>=5.22.1",
 ]
