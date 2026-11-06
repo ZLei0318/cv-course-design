@@ -54,4 +54,4 @@ Sen1Floods11（CVPR 2020 Workshop），446 张 512×512 人工标注 Sentinel-1 
 
 ## 环境
 
-Python 3.12，PyTorch，transformers，单卡训练（NVIDIA H20）。依赖见 `pyproject.toml`。
+Python 3.12，PyTorch，transformers。训练在单张 NVIDIA H20（显存 141GB）上完成。依赖见 `pyproject.toml`。
