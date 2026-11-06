@@ -1,0 +1,312 @@
+{
+  "pdf": "报告/figures_sci/fig5_results.pdf",
+  "auditable": true,
+  "verdict": "FIX BEFORE DELIVERY",
+  "page_count": 1,
+  "visible_text_box_count": 61,
+  "text_trace_count": 57,
+  "stroke_path_count": 269,
+  "filled_region_count": 596,
+  "image_region_count": 0,
+  "summary": {
+    "fail": 12,
+    "warn": 1,
+    "contained_fill_overlays": 11,
+    "contained_image_overlays": 0
+  },
+  "thresholds": {
+    "text_inset_pt": 0.6,
+    "min_overlap_ratio": 0.05,
+    "clipping_tolerance_pt": 0.5
+  },
+  "findings": [
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 11.9% of the smaller box",
+      "text": "SegF",
+      "text_bbox": [
+        44.97184753417969,
+        146.18138122558594,
+        61.81512451171875,
+        160.5638427734375
+      ],
+      "other_text": ".",
+      "other_bbox": [
+        59.80744934082031,
+        146.17616271972656,
+        79.60198974609375,
+        162.6251220703125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 14.7% of the smaller box",
+      "text": "SegF",
+      "text_bbox": [
+        44.97184753417969,
+        146.18138122558594,
+        61.81512451171875,
+        160.5638427734375
+      ],
+      "other_text": "SAM-0",
+      "other_bbox": [
+        59.34221649169922,
+        145.51174926757812,
+        79.72018432617188,
+        162.7939453125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 6.2% of the smaller box",
+      "text": "0.68",
+      "text_bbox": [
+        55.04917526245117,
+        44.88294219970703,
+        61.54917526245117,
+        59.36003112792969
+      ],
+      "other_text": "Bolivia (OOD)",
+      "other_bbox": [
+        60.06193923950195,
+        42.60813522338867,
+        102.0969467163086,
+        48.80813217163086
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 19.6% of the smaller box",
+      "text": "SAM-0",
+      "text_bbox": [
+        59.34221649169922,
+        145.51174926757812,
+        79.72018432617188,
+        162.7939453125
+      ],
+      "other_text": "SAM+L",
+      "other_bbox": [
+        75.56458282470703,
+        146.1763916015625,
+        97.38106536865234,
+        164.04115295410156
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": ".",
+      "text_bbox": [
+        59.80744934082031,
+        146.17616271972656,
+        79.60198974609375,
+        162.6251220703125
+      ],
+      "other_text": "SAM-0",
+      "other_bbox": [
+        59.34221649169922,
+        145.51174926757812,
+        79.72018432617188,
+        162.7939453125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 20.4% of the smaller box",
+      "text": ".",
+      "text_bbox": [
+        59.80744934082031,
+        146.17616271972656,
+        79.60198974609375,
+        162.6251220703125
+      ],
+      "other_text": "SAM+L",
+      "other_bbox": [
+        75.56458282470703,
+        146.1763916015625,
+        97.38106536865234,
+        164.04115295410156
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 93.2% of the smaller box",
+      "text": "T",
+      "text_bbox": [
+        60.06193923950195,
+        34.8581428527832,
+        100.25164031982422,
+        41.05813980102539
+      ],
+      "other_text": "est (in-dist.)",
+      "other_bbox": [
+        62.8049430847168,
+        34.047035217285156,
+        100.25164031982422,
+        41.264225006103516
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 88.7% of the smaller box",
+      "text": "SegF",
+      "text_bbox": [
+        152.03172302246094,
+        146.18138122558594,
+        168.87493896484375,
+        160.5638427734375
+      ],
+      "other_text": ".",
+      "other_bbox": [
+        163.2391815185547,
+        145.5169677734375,
+        168.9931640625,
+        152.55934143066406
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 8.3% of the smaller box",
+      "text": "SegF",
+      "text_bbox": [
+        152.03172302246094,
+        146.18138122558594,
+        168.87493896484375,
+        160.5638427734375
+      ],
+      "other_text": "SAM-0",
+      "other_bbox": [
+        167.4718017578125,
+        146.1761474609375,
+        187.26632690429688,
+        162.6251220703125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 24.0% of the smaller box",
+      "text": ".",
+      "text_bbox": [
+        163.2391815185547,
+        145.5169677734375,
+        168.9931640625,
+        152.55934143066406
+      ],
+      "other_text": "SAM-0",
+      "other_bbox": [
+        167.4718017578125,
+        146.1761474609375,
+        187.26632690429688,
+        162.6251220703125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 17.3% of the smaller box",
+      "text": "SAM-0",
+      "text_bbox": [
+        167.4718017578125,
+        146.1761474609375,
+        187.26632690429688,
+        162.6251220703125
+      ],
+      "other_text": "SAM+L",
+      "other_bbox": [
+        183.83343505859375,
+        146.17640686035156,
+        205.64993286132812,
+        164.04115295410156
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 96.0% of the smaller box",
+      "text": "T",
+      "text_bbox": [
+        351.7182312011719,
+        19.530963897705078,
+        434.0902099609375,
+        27.030963897705078
+      ],
+      "other_text": "otal-area bias +3.0%",
+      "other_bbox": [
+        355.01629638671875,
+        18.549789428710938,
+        434.0902099609375,
+        27.280258178710938
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 1 filled region(s)",
+      "text": "0.70",
+      "text_bbox": [
+        44.02593231201172,
+        43.03230667114258,
+        50.52593231201172,
+        57.509403228759766
+      ],
+      "other_text": null,
+      "other_bbox": [
+        48.901939392089844,
+        43.212005615234375,
+        55.10193634033203,
+        47.55200958251953
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        22000
+      ]
+    }
+  ]
+}

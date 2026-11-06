@@ -1,0 +1,268 @@
+{
+  "pdf": "报告/figures_sci/fig2_pipeline.pdf",
+  "auditable": true,
+  "verdict": "FIX BEFORE DELIVERY",
+  "page_count": 1,
+  "visible_text_box_count": 23,
+  "text_trace_count": 27,
+  "stroke_path_count": 25,
+  "filled_region_count": 18,
+  "image_region_count": 0,
+  "summary": {
+    "fail": 5,
+    "warn": 5,
+    "contained_fill_overlays": 18,
+    "contained_image_overlays": 0
+  },
+  "thresholds": {
+    "text_inset_pt": 0.6,
+    "min_overlap_ratio": 0.05,
+    "clipping_tolerance_pt": 0.5
+  },
+  "findings": [
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 2 stroked path(s)",
+      "text": "446 hand-labelled chips",
+      "text_bbox": [
+        7.199999809265137,
+        44.89811325073242,
+        79.10425567626953,
+        50.89811325073242
+      ],
+      "other_text": null,
+      "other_bbox": [
+        9.121821403503418,
+        21.112808227539062,
+        87.72364807128906,
+        75.12720489501953
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        1,
+        4
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "Gen-1 · UNet (hand-written)",
+      "text_bbox": [
+        15.062395095825195,
+        116.99562072753906,
+        98.92522430419922,
+        122.99562072753906
+      ],
+      "other_text": null,
+      "other_bbox": [
+        17.03426170349121,
+        98.86080932617188,
+        96.94990539550781,
+        148.783203125
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        8
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 4 stroked path(s)",
+      "text": "Three generations of segmentation paradigms on one data / loss / metric stack",
+      "text_bbox": [
+        56.49877166748047,
+        15.13231372833252,
+        354.2404479980469,
+        22.632312774658203
+      ],
+      "other_text": null,
+      "other_bbox": [
+        9.121821403503418,
+        21.112808227539062,
+        363.9947509765625,
+        75.12720489501953
+      ],
+      "object_count": 4,
+      "object_indexes": [
+        1,
+        2,
+        3,
+        17
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "27 M · ImageNet pre-trained",
+      "text_bbox": [
+        103.44453430175781,
+        124.19874572753906,
+        188.5676727294922,
+        130.19874572753906
+      ],
+      "other_text": null,
+      "other_bbox": [
+        106.04920959472656,
+        98.86080932617188,
+        185.96485900878906,
+        148.783203125
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        9
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "94 M · zero-shot + LoRA (1.0%)",
+      "text_bbox": [
+        191.9156951904297,
+        124.20069885253906,
+        286.04150390625,
+        130.20069885253906
+      ],
+      "other_text": null,
+      "other_bbox": [
+        195.0641632080078,
+        98.86080932617188,
+        282.8922424316406,
+        148.783203125
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        10
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 1 filled region(s)",
+      "text": "446 hand-labelled chips",
+      "text_bbox": [
+        7.199999809265137,
+        44.89811325073242,
+        79.10425567626953,
+        50.89811325073242
+      ],
+      "other_text": null,
+      "other_bbox": [
+        9.121821403503418,
+        21.112808227539062,
+        77.1688003540039,
+        75.12720489501953
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        1
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 1 filled region(s)",
+      "text": "Gen-1 · UNet (hand-written)",
+      "text_bbox": [
+        15.062395095825195,
+        116.99562072753906,
+        98.92522430419922,
+        122.99562072753906
+      ],
+      "other_text": null,
+      "other_bbox": [
+        17.03426170349121,
+        98.86080932617188,
+        96.94990539550781,
+        148.783203125
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        8
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 1 filled region(s)",
+      "text": "Three generations of segmentation paradigms on one data / loss / metric stack",
+      "text_bbox": [
+        56.49877166748047,
+        15.13231372833252,
+        354.2404479980469,
+        22.632312774658203
+      ],
+      "other_text": null,
+      "other_bbox": [
+        88.24622344970703,
+        21.112808227539062,
+        164.2056427001953,
+        75.12720489501953
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        2
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 1 filled region(s)",
+      "text": "27 M · ImageNet pre-trained",
+      "text_bbox": [
+        103.44453430175781,
+        124.19874572753906,
+        188.5676727294922,
+        130.19874572753906
+      ],
+      "other_text": null,
+      "other_bbox": [
+        106.04920959472656,
+        98.86080932617188,
+        185.96485900878906,
+        148.783203125
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        9
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 1 filled region(s)",
+      "text": "94 M · zero-shot + LoRA (1.0%)",
+      "text_bbox": [
+        191.9156951904297,
+        124.20069885253906,
+        286.04150390625,
+        130.20069885253906
+      ],
+      "other_text": null,
+      "other_bbox": [
+        195.0641632080078,
+        98.86080932617188,
+        282.8922424316406,
+        148.783203125
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        10
+      ]
+    }
+  ]
+}

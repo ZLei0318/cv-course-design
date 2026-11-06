@@ -1,0 +1,76 @@
+{
+  "pdf": "报告/figures_sci/fig3_training.pdf",
+  "auditable": true,
+  "verdict": "FIX BEFORE DELIVERY",
+  "page_count": 1,
+  "visible_text_box_count": 56,
+  "text_trace_count": 58,
+  "stroke_path_count": 251,
+  "filled_region_count": 238,
+  "image_region_count": 0,
+  "summary": {
+    "fail": 1,
+    "warn": 1,
+    "contained_fill_overlays": 13,
+    "contained_image_overlays": 0
+  },
+  "thresholds": {
+    "text_inset_pt": 0.6,
+    "min_overlap_ratio": 0.05,
+    "clipping_tolerance_pt": 0.5
+  },
+  "findings": [
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "0",
+      "text_bbox": [
+        142.02207946777344,
+        143.05348205566406,
+        145.96670532226562,
+        149.25347900390625
+      ],
+      "other_text": null,
+      "other_bbox": [
+        144.39276123046875,
+        40.89579772949219,
+        212.64117431640625,
+        168.6868133544922
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        30,
+        31,
+        32
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 3 filled region(s)",
+      "text": "UNet iterations",
+      "text_bbox": [
+        258.8265075683594,
+        153.22337341308594,
+        311.6937255859375,
+        160.22337341308594
+      ],
+      "other_text": null,
+      "other_bbox": [
+        251.06832885742188,
+        63.18421936035156,
+        319.4440612792969,
+        858.0068359375
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        37000,
+        38000,
+        39000
+      ]
+    }
+  ]
+}

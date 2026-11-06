@@ -23,3 +23,7 @@ outputs/checkpoints/
 .DS_Store
 *.log
 报告/课设报告_v0.1_简版草稿.pdf
+报告/
+notebooks/05_final_report.ipynb
+notebooks/06_sci_report.ipynb
+scripts/build_docx.js

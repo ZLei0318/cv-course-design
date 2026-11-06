@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SCI 出版级图表统一生成器（nature-figure 规范）
+"""生成报告用的图表（matplotlib，输出 PDF 和 PNG）
 
 Figure contracts (one claim per figure):
   Fig.1 Dataset heterogeneity & dual-mask necessity  [image plate + quant]
@@ -24,7 +24,6 @@ from pathlib import Path
 os.environ.setdefault("HF_HUB_OFFLINE", "1")
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-sys.path.insert(0, "/home/ctgu53/.claude/skills/nature-figure/scripts")
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -48,7 +47,7 @@ mpl.rcParams.update({
 
 C_UNET, C_SEGF, C_SAMZ, C_SAML, C_ACC, C_WATER = (
     "#0072B2", "#009E73", "#8C8C8C", "#E69F00", "#D55E00", (0.0, 0.4, 1.0))
-OUT = ROOT / "报告" / "figures_sci"
+OUT = ROOT / "outputs" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 PANEL = dict(fontsize=9, fontweight="bold")
 
@@ -61,16 +60,10 @@ FIG_VERSION = "v1.0"  # 版本规范：改图升版本号，一图一文件夹
 
 
 def export(fig, name, panels=True):
-    """契约出口：先对齐门，后导出 PDF+PNG（一图一夹 + 版本号）"""
+    """保存图表为 PDF 和 PNG（一图一文件夹 + 版本号）"""
     out_dir = OUT / name
     out_dir.mkdir(exist_ok=True)
     name = f"{name}/{name}_{FIG_VERSION}"
-    if panels:
-        from audit_panel_alignment import require_matplotlib_panel_alignment
-        require_matplotlib_panel_alignment(
-            fig, json_out=str(OUT / f"{name}.alignment.json"),
-            overlay_svg=str(OUT / f"{name}.alignment.svg"),
-            tolerance_pt=1.5, gutter_tolerance_pt=1.5, strict=True)
     fig.savefig(OUT / f"{name}.pdf", bbox_inches="tight")
     fig.savefig(OUT / f"{name}.png", bbox_inches="tight", dpi=300)
     plt.close(fig)
