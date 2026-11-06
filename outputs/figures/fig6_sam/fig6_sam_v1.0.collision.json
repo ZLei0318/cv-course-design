@@ -1,0 +1,96 @@
+{
+  "pdf": "报告/figures_sci/fig6_sam.pdf",
+  "auditable": true,
+  "verdict": "FIX BEFORE DELIVERY",
+  "page_count": 1,
+  "visible_text_box_count": 36,
+  "text_trace_count": 42,
+  "stroke_path_count": 48,
+  "filled_region_count": 35,
+  "image_region_count": 1,
+  "summary": {
+    "fail": 3,
+    "warn": 0,
+    "contained_fill_overlays": 4,
+    "contained_image_overlays": 0
+  },
+  "thresholds": {
+    "text_inset_pt": 0.6,
+    "min_overlap_ratio": 0.05,
+    "clipping_tolerance_pt": 0.5
+  },
+  "findings": [
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "2.25",
+      "text_bbox": [
+        18.200000762939453,
+        32.81264114379883,
+        32.00619888305664,
+        39.012638092041016
+      ],
+      "other_text": null,
+      "other_bbox": [
+        26.15281105041504,
+        37.96464538574219,
+        33.592811584472656,
+        37.96464538574219
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        19
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "v1: 47 k params (mis-targeted)",
+      "text_bbox": [
+        38.55281066894531,
+        35.19076919555664,
+        135.63385009765625,
+        41.39076614379883
+      ],
+      "other_text": null,
+      "other_bbox": [
+        42.664276123046875,
+        35.010101318359375,
+        136.3247833251953,
+        103.14518737792969
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        15
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "v2: 0.98 M params (fixed)",
+      "text_bbox": [
+        38.55281066894531,
+        42.94077682495117,
+        118.47354888916016,
+        49.14077377319336
+      ],
+      "other_text": null,
+      "other_bbox": [
+        42.664276123046875,
+        35.010101318359375,
+        136.3247833251953,
+        103.14518737792969
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        15
+      ]
+    }
+  ]
+}
