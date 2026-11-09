@@ -128,34 +128,59 @@ def fig1_dataset():
 
 # ---------------------------------------------------------------- Fig.2
 def fig2_pipeline():
-    fig, ax = plt.subplots(figsize=(7.09, 3.1))
-    ax.set_xlim(0, 100); ax.set_ylim(0, 42); ax.axis("off")
+    fig, ax = plt.subplots(figsize=(7.09, 3.4))
+    ax.set_xlim(0, 100); ax.set_ylim(-9, 42); ax.axis("off")
 
-    def box(x, y, w, h, text, fc, fs=6.0):
+    PAD = 0.6   # FancyBboxPatch 的视觉外扩量
+    GAP = 1.0   # 箭头端点与框视觉边界的安全间隙
+
+    def box(x, y, w, h, head, body, fc, headfs=6.0):
         ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.6",
                                     fc=fc, ec="#333333", lw=0.7))
-        ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=fs)
+        cy = y + h / 2
+        ax.text(x + w / 2, cy + 1.0, head, ha="center", va="center", fontsize=headfs)
+        ax.text(x + w / 2, cy - 1.4, body, ha="center", va="center",
+                fontsize=5.4, linespacing=1.5)
 
     def arrow(x1, y1, x2, y2):
         ax.add_patch(FancyArrowPatch((x1, y1), (x2, y2), arrowstyle="-|>",
                                      mutation_scale=8, lw=0.8, color="#333333"))
 
-    box(1, 26, 16, 12, "Sen1Floods11\n446 hand-labelled chips\nSAR VV/VH · 10 m/px", "#E8EDF3")
-    box(21, 26, 18, 12, "Pre-processing\nper-channel dB clip\nnorm · dual valid mask", "#E8F2EA")
-    box(43.5, 26, 14, 12, "Official splits\ntrain 252 / val 89\ntest 90 / Bolivia 15", "#E8EDF3")
-    arrow(17, 32, 21, 32); arrow(39, 32, 43.5, 32)
+    # 行1 (y=26): 数据链 —— 箭头起止 = 框边 ± (PAD+GAP)，不再压边框
+    box(1, 26, 16, 12, "Sen1Floods11",
+        "446 hand-labelled chips\nSAR VV/VH · 10 m/px", "#E8EDF3")
+    box(22, 26, 17, 12, "Pre-processing",
+        "per-channel dB clip\nnorm · dual valid mask", "#E8F2EA")
+    box(43, 26, 15, 12, "Official splits",
+        "train 252 / val 89\ntest 90 / Bolivia 15", "#E8EDF3")
+    arrow(16 + PAD + GAP, 32, 22 - PAD - GAP, 32)
+    arrow(39 + PAD + GAP, 32, 43 - PAD - GAP, 32)
 
-    box(3, 8, 19, 11, "Gen-1 · UNet (hand-written)\n31 M · from scratch", "#D9E8F5")
-    box(25.5, 8, 19, 11, "Gen-2 · SegFormer-B2\n27 M · ImageNet pre-trained", "#DCF0E6")
-    box(48, 8, 21, 11, "Gen-3 · SAM ViT-B\n94 M · zero-shot + LoRA (1.0%)", "#FBEBD5")
-    for xm in (12.5, 35, 58.5):
-        arrow(50, 26, xm, 19.5)
+    # 行2 (y=9): 三代模型 + 后处理
+    box(3, 9, 20, 11, "Gen-1 · UNet",
+        "hand-written · 31 M\nfrom scratch", "#D9E8F5")
+    box(27, 9, 20, 11, "Gen-2 · SegFormer-B2",
+        "27 M · ImageNet pre-trained", "#DCF0E6")
+    box(51, 9, 22, 11, "Gen-3 · SAM ViT-B",
+        "94 M · zero-shot + LoRA (1.0%)", "#FBEBD5")
+    box(76.5, 9, 17.5, 11, "Connected components",
+        "patches ≥ 1000 m²\narea at 100 m² per px", "#EDE8F5", headfs=5.5)
 
-    box(72.5, 26, 17, 12, "masked BCE + Dice\nidentical loss & metric", "#F3E8EC")
-    box(73, 8, 17, 11, "Connected components\npatches ≥ 1000 m²\narea at 100 m² per px", "#EDE8F5")
-    box(84, -3.5, 15, 11, "Inundation statistics\npatch count · km²", "#E8EDF3")
-    arrow(89.5, 26, 84, 19.5); arrow(81.5, 8, 89, 8); arrow(58.5, 13.5, 73, 13.5)
-    ax.text(50, 38.6, "Three generations of segmentation paradigms on one data / loss / metric stack",
+    # splits -> 三模型扇形: 起点分散在 splits 底边, 终点在模型顶边外侧(留半个箭头余量)
+    for xs, xe in ((45.5, 13), (50, 37), (54.5, 62)):
+        arrow(xs, 26 - PAD - GAP, xe, 9 + 11 + PAD + GAP + 0.7)
+
+    # 右列: 损失/指标 -> 连通域 -> 淹没统计, 全部垂直/水平短线
+    box(72, 26, 17, 12, "masked BCE + Dice",
+        "identical loss & metric", "#F3E8EC")
+    box(76.5, -7, 17.5, 11, "Inundation statistics",
+        "patch count · km²", "#E8EDF3")
+    arrow(58 + PAD + GAP, 32, 72 - PAD - GAP, 32)                  # splits -> BCE(同一数据/标签口径)
+    arrow(85.5, 26 - PAD - GAP, 85.5, 9 + 11 + PAD + GAP + 0.5)    # BCE -> CC
+    arrow(51 + 22 + PAD + GAP, 14.5, 76.5 - PAD - GAP, 14.5)       # Gen-3 -> CC
+    arrow(85.5, 9 - PAD - GAP, 85.5, -7 + 11 + PAD + GAP + 0.5)    # CC -> IS
+
+    ax.text(50, 40, "Three generations of segmentation paradigms on one data / loss / metric stack",
             ha="center", fontsize=7.5, style="italic")
     export(fig, "fig2_pipeline", panels=False)
 
