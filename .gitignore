@@ -27,3 +27,10 @@ outputs/checkpoints/
 notebooks/05_final_report.ipynb
 notebooks/06_sci_report.ipynb
 scripts/build_docx.js
+
+# ===== 构建工具链（本地构建器,不入库）=====
+node_modules/
+package.json
+package-lock.json
+scripts/build_course_docx.js
+scripts/make_course_figures.py
