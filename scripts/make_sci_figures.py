@@ -29,9 +29,13 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import torch
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+
+try:  # torch 仅 Fig.4/Fig.6c 需要;纯 CSV 图(Fig.1/3/5)无 torch 环境也应可跑
+    import torch
+except ImportError:  # noqa
+    torch = None
 
 mpl.rcParams.update({
     "font.family": "sans-serif",
@@ -59,11 +63,12 @@ def panel_label(ax, letter, dx=-0.14, dy=1.12):
 FIG_VERSION = "v1.0"  # 版本规范：改图升版本号，一图一文件夹
 
 
-def export(fig, name, panels=True):
+def export(fig, name, panels=True, ver=None):
     """保存图表为 PDF 和 PNG（一图一文件夹 + 版本号）"""
     out_dir = OUT / name
     out_dir.mkdir(exist_ok=True)
-    name = f"{name}/{name}_{FIG_VERSION}"
+    v = ver or FIG_VERSION
+    name = f"{name}/{name}_{v}"
     fig.savefig(OUT / f"{name}.pdf", bbox_inches="tight")
     fig.savefig(OUT / f"{name}.png", bbox_inches="tight", dpi=300)
     plt.close(fig)
@@ -205,7 +210,7 @@ def fig3_training():
     axs[1].set_xlabel("Epoch"); axs[1].set_ylabel("Validation micro-IoU")
     axs[1].set_ylim(0.3, 0.72)
 
-    best = [H[t].loc[H[t].val_macro_iou.idxmax()].val_micro_iou for t in ["unet", "unet_v2", "unet_v3"]]
+    best = [H[t].val_micro_iou.max() for t in ["unet", "unet_v2", "unet_v3"]]
     bars = axs[2].bar(["v1", "v2", "v3"], best, width=0.62,
                       color=["#9EC3E3", "#5E93C8", C_UNET])
     for b, v in zip(bars, best):
@@ -226,7 +231,7 @@ def fig3_training():
     for i, ax in enumerate(axs):
         panel_label(ax, "abcd"[i], dx=-0.24 if i in (0, 1) else -0.16)
     fig.subplots_adjust(wspace=0.42)
-    export(fig, "fig3_training")
+    export(fig, "fig3_training", ver="v1.1")
 
 
 # ---------------------------------------------------------------- Fig.4
